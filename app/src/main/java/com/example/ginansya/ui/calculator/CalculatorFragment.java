@@ -1,5 +1,6 @@
 package com.example.ginansya.ui.calculator;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,12 +13,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.example.ginansya.R;
+import com.example.ginansya.data.CalculatorState;
 import com.example.ginansya.domain.CompoundInterestCalculator;
 import com.example.ginansya.util.CurrencyUtils;
 import com.github.mikephil.charting.charts.LineChart;
@@ -59,13 +59,8 @@ public class CalculatorFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ViewCompat.setOnApplyWindowInsetsListener(view.findViewById(R.id.calc_scroll),
-                (v, insets) -> {
-            Insets bars = insets.getInsets(WindowInsetsCompat.Type.statusBars());
-            v.setPadding(v.getPaddingLeft(), bars.top,
-                    v.getPaddingRight(), v.getPaddingBottom());
-            return insets;
-        });
+        view.findViewById(R.id.calc_back).setOnClickListener(v ->
+                Navigation.findNavController(v).popBackStack());
 
         inputPrincipal = view.findViewById(R.id.input_principal);
         inputMonthly = view.findViewById(R.id.input_monthly);
@@ -77,6 +72,7 @@ public class CalculatorFragment extends Fragment {
         chart = view.findViewById(R.id.calc_chart);
 
         configureChart();
+        prefillFromState();
 
         TextWatcher watcher = new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int a, int b, int c) {}
@@ -91,14 +87,30 @@ public class CalculatorFragment extends Fragment {
         recalc();
     }
 
+    private void prefillFromState() {
+        Context ctx = requireContext();
+        double p = CalculatorState.getPrincipal(ctx);
+        double m = CalculatorState.getMonthly(ctx);
+        double r = CalculatorState.getRate(ctx);
+        int y = CalculatorState.getYears(ctx);
+        if (p != 0) inputPrincipal.setText(numText(p));
+        if (m != 0) inputMonthly.setText(numText(m));
+        if (r != 0) inputRate.setText(numText(r));
+        if (y != 0) inputYears.setText(String.valueOf(y));
+    }
+
+    private static String numText(double v) {
+        return v == Math.floor(v) ? String.valueOf((long) v) : String.valueOf(v);
+    }
+
     private void recalc() {
         double principal = readDouble(inputPrincipal, 0);
         double monthly = readDouble(inputMonthly, 0);
         double rate = readDouble(inputRate, 0);
         int years = (int) readDouble(inputYears, 0);
 
-        CompoundInterestCalculator.Result r =
-                CompoundInterestCalculator.project(principal, monthly, rate, years);
+        CompoundInterestCalculator.Result r = CalculatorState.update(
+                requireContext(), principal, monthly, rate, years);
 
         futureValue.setText(CurrencyUtils.format(r.futureValue));
         contributedView.setText(CurrencyUtils.format(r.totalContributed));

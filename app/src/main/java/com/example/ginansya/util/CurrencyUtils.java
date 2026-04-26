@@ -1,20 +1,34 @@
 package com.example.ginansya.util;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Locale;
 
 public final class CurrencyUtils {
 
-    private static final NumberFormat CURRENCY =
-            NumberFormat.getCurrencyInstance(Locale.US);
-    private static final NumberFormat COMPACT =
-            NumberFormat.getCurrencyInstance(Locale.US);
+    private static final String SYMBOL = "₱";
+    private static final NumberFormat CURRENCY;
+    private static final NumberFormat COMPACT;
 
     static {
+        CURRENCY = build();
         CURRENCY.setMaximumFractionDigits(2);
         CURRENCY.setMinimumFractionDigits(0);
+        COMPACT = build();
         COMPACT.setMaximumFractionDigits(0);
         COMPACT.setMinimumFractionDigits(0);
+    }
+
+    private static NumberFormat build() {
+        NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.forLanguageTag("en-PH"));
+        if (nf instanceof DecimalFormat) {
+            DecimalFormat df = (DecimalFormat) nf;
+            DecimalFormatSymbols sym = df.getDecimalFormatSymbols();
+            sym.setCurrencySymbol(SYMBOL);
+            df.setDecimalFormatSymbols(sym);
+        }
+        return nf;
     }
 
     private CurrencyUtils() {}
@@ -28,17 +42,12 @@ public final class CurrencyUtils {
 
     public static String formatCompact(double amount) {
         if (Math.abs(amount) >= 1_000_000) {
-            return "$" + round(amount / 1_000_000.0, 1) + "M";
+            return SYMBOL + round(amount / 1_000_000.0, 1) + "M";
         }
         if (Math.abs(amount) >= 1_000) {
-            return "$" + round(amount / 1_000.0, 1) + "k";
+            return SYMBOL + round(amount / 1_000.0, 1) + "k";
         }
         return COMPACT.format(amount);
-    }
-
-    public static String formatSigned(double amount) {
-        String base = format(Math.abs(amount));
-        return amount >= 0 ? "+" + base : "−" + base;
     }
 
     private static String round(double v, int decimals) {

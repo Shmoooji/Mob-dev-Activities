@@ -1,37 +1,16 @@
 <resources>
     <string name="app_name">Ginansya</string>
 
-    <string name="nav_home">Home</string>
-    <string name="nav_plans">Plans</string>
-    <string name="nav_calculator">Calculator</string>
-    <string name="nav_insights">Insights</string>
+    <string name="nav_back">Back</string>
 
-    <string name="greeting_evening">Good evening,</string>
-    <string name="greeting_user">Alex</string>
-    <string name="dashboard_total_saved">Total saved across plans</string>
-    <string name="dashboard_this_month">this month</string>
-    <string name="dashboard_quick_actions">Quick actions</string>
-    <string name="dashboard_active_plans">Your plans</string>
-    <string name="dashboard_see_all">See all</string>
-    <string name="dashboard_growth">Growth over time</string>
-    <string name="dashboard_insight">Insight for today</string>
-    <string name="dashboard_insight_body">At your current pace, your Emergency Fund will reach its goal <b>2 months early</b>. Keep it up!</string>
-
-    <string name="action_log">Log deposit</string>
-    <string name="action_new_plan">New plan</string>
-    <string name="action_calculate">Calculate</string>
-    <string name="action_what_if">What-if</string>
-
-    <string name="plans_title">Your plans</string>
-    <string name="plans_subtitle">3 active · 1 completed</string>
-    <string name="plans_filter_all">All</string>
-    <string name="plans_filter_active">Active</string>
-    <string name="plans_filter_completed">Completed</string>
-
-    <string name="status_ahead">Ahead</string>
-    <string name="status_on_track">On track</string>
-    <string name="status_behind">Behind</string>
-    <string name="status_completed">Completed</string>
+    <string name="home_title">Your potential</string>
+    <string name="home_subtitle">See what consistent saving could grow into.</string>
+    <string name="home_could_grow_to">Your money could grow to</string>
+    <string name="home_you_contribute">You contribute</string>
+    <string name="home_interest_earned">Interest earned</string>
+    <string name="home_try_yours">Try your own numbers</string>
+    <string name="home_try_yours_body">Adjust the starting amount, monthly deposit, rate, and term.</string>
+    <string name="home_open_calc">Open calculator</string>
 
     <string name="calc_title">Compound Calculator</string>
     <string name="calc_subtitle">See how your money can grow</string>
@@ -44,18 +23,6 @@
     <string name="calc_interest_earned">Interest earned</string>
     <string name="calc_info">How is this calculated?</string>
     <string name="calc_info_body">We use the compound interest formula and add your monthly deposits each period. Actual returns depend on your savings provider.</string>
-
-    <string name="insights_title">Insights</string>
-    <string name="insights_subtitle">Understand your progress</string>
-    <string name="insights_monthly">Monthly contributions</string>
-    <string name="insights_allocation">Allocation</string>
-    <string name="insights_tips">Tips for you</string>
-    <string name="insights_tip_1_title">You\'re beating your projection</string>
-    <string name="insights_tip_1_body">Emergency Fund is 4% ahead of schedule — consider locking in the extra for a future plan.</string>
-    <string name="insights_tip_2_title">Small boost, big win</string>
-    <string name="insights_tip_2_body">Adding $50/mo to House Deposit would finish it 7 months sooner.</string>
-    <string name="insights_tip_3_title">Stay consistent</string>
-    <string name="insights_tip_3_body">You\'ve logged at least one deposit every month — that\'s a 6-month streak.</string>
 
     <string name="privacy_note">All your data stays on this device.</string>
 </resources>

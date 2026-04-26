@@ -79,22 +79,4 @@
         <item name="cardBackgroundColor">?colorPrimary</item>
     </style>
 
-    <style name="Widget.Ginansya.Card.QuickAction" parent="Widget.Material3.CardView.Filled">
-        <item name="cardCornerRadius">20dp</item>
-        <item name="cardElevation">0dp</item>
-        <item name="cardBackgroundColor">?colorPrimaryContainer</item>
-        <item name="rippleColor">?colorPrimary</item>
-    </style>
-
-    <style name="Widget.Ginansya.BottomNav" parent="Widget.Material3.BottomNavigationView">
-        <item name="backgroundTint">?colorSurface</item>
-        <item name="itemIconTint">@color/bottom_nav_item_color</item>
-        <item name="itemTextColor">@color/bottom_nav_item_color</item>
-        <item name="itemActiveIndicatorStyle">@style/Widget.Ginansya.BottomNav.ActiveIndicator</item>
-        <item name="labelVisibilityMode">labeled</item>
-    </style>
-
-    <style name="Widget.Ginansya.BottomNav.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">?colorPrimaryContainer</item>
-    </style>
 </resources>

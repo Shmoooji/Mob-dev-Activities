@@ -14,55 +14,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:paddingHorizontal="@dimen/spacing_lg"
         android:paddingTop="@dimen/spacing_md"
         android:paddingBottom="@dimen/spacing_xl">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="@dimen/spacing_lg"
-            android:paddingVertical="@dimen/spacing_md">
+            android:text="@string/home_title"
+            android:textAppearance="?attr/textAppearanceHeadlineMedium"
+            android:textStyle="bold" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/greeting_evening"
-                    android:textAppearance="?attr/textAppearanceBodyMedium"
-                    android:textColor="?colorOnSurfaceVariant" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/greeting_user"
-                    android:textAppearance="?attr/textAppearanceHeadlineSmall"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <FrameLayout
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                android:background="@drawable/bg_icon_circle">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="A"
-                    android:textAppearance="?attr/textAppearanceTitleMedium"
-                    android:textColor="?colorOnPrimaryContainer"
-                    android:textStyle="bold" />
-            </FrameLayout>
-        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="@string/home_subtitle"
+            android:textAppearance="@style/TextAppearance.Ginansya.Caption" />
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/spacing_lg"
+            android:layout_marginTop="@dimen/spacing_md"
             android:background="@drawable/bg_hero_gradient"
             android:padding="@dimen/spacing_lg">
 
@@ -71,293 +44,84 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/dashboard_total_saved"
-                        android:textAppearance="?attr/textAppearanceBodyMedium"
-                        android:textColor="#D1FAE5" />
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_info"
-                        app:tint="#D1FAE5"
-                        android:contentDescription="@null" />
-                </LinearLayout>
+                    android:text="@string/home_could_grow_to"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="#D1FAE5" />
 
                 <TextView
-                    android:id="@+id/total_saved"
+                    android:id="@+id/home_future_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_sm"
                     android:textAppearance="?attr/textAppearanceDisplaySmall"
                     android:textStyle="bold"
                     android:textColor="@android:color/white"
-                    tools:text="$29,450" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_md"
-                    android:background="@drawable/bg_icon_circle_white"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:paddingHorizontal="12dp"
-                    android:paddingVertical="6dp">
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:src="@drawable/ic_trending_up"
-                        app:tint="@android:color/white"
-                        android:contentDescription="@null" />
-                    <TextView
-                        android:id="@+id/this_month_delta"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:textAppearance="?attr/textAppearanceLabelLarge"
-                        android:textColor="@android:color/white"
-                        tools:text="+$1,240 this month" />
-                </LinearLayout>
+                    tools:text="₱0" />
             </LinearLayout>
         </FrameLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/spacing_lg"
-            android:layout_marginTop="@dimen/spacing_lg"
-            android:text="@string/dashboard_quick_actions"
-            android:textAppearance="@style/TextAppearance.Ginansya.SectionTitle" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/spacing_lg"
-            android:paddingVertical="@dimen/spacing_md">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginEnd="@dimen/spacing_sm"
-                android:orientation="vertical"
-                android:gravity="center">
-                <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.Ginansya.Card.QuickAction"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/quick_action_size"
-                    android:clickable="true"
-                    android:focusable="true">
-                    <ImageView
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_add"
-                        app:tint="?colorPrimary"
-                        android:contentDescription="@null" />
-                </com.google.android.material.card.MaterialCardView>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_sm"
-                    android:text="@string/action_log"
-                    android:textAppearance="?attr/textAppearanceLabelMedium" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginHorizontal="@dimen/spacing_xs"
-                android:orientation="vertical"
-                android:gravity="center">
-                <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.Ginansya.Card.QuickAction"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/quick_action_size"
-                    android:clickable="true"
-                    android:focusable="true">
-                    <ImageView
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_flag"
-                        app:tint="?colorPrimary"
-                        android:contentDescription="@null" />
-                </com.google.android.material.card.MaterialCardView>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_sm"
-                    android:text="@string/action_new_plan"
-                    android:textAppearance="?attr/textAppearanceLabelMedium" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginHorizontal="@dimen/spacing_xs"
-                android:orientation="vertical"
-                android:gravity="center">
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/action_calc"
-                    style="@style/Widget.Ginansya.Card.QuickAction"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/quick_action_size"
-                    android:clickable="true"
-                    android:focusable="true">
-                    <ImageView
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_calculator"
-                        app:tint="?colorPrimary"
-                        android:contentDescription="@null" />
-                </com.google.android.material.card.MaterialCardView>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_sm"
-                    android:text="@string/action_calculate"
-                    android:textAppearance="?attr/textAppearanceLabelMedium" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="@dimen/spacing_sm"
-                android:orientation="vertical"
-                android:gravity="center">
-                <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.Ginansya.Card.QuickAction"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/quick_action_size"
-                    android:clickable="true"
-                    android:focusable="true">
-                    <ImageView
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_tune"
-                        app:tint="?colorPrimary"
-                        android:contentDescription="@null" />
-                </com.google.android.material.card.MaterialCardView>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_sm"
-                    android:text="@string/action_what_if"
-                    android:textAppearance="?attr/textAppearanceLabelMedium" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="@dimen/spacing_lg"
-            android:layout_marginTop="@dimen/spacing_md">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/dashboard_active_plans"
-                android:textAppearance="@style/TextAppearance.Ginansya.SectionTitle" />
-
-            <TextView
-                android:id="@+id/plans_see_all"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/dashboard_see_all"
-                android:textColor="?colorPrimary"
-                android:textStyle="bold"
-                android:textAppearance="?attr/textAppearanceLabelLarge"
-                android:padding="@dimen/spacing_sm"
-                android:background="?attr/selectableItemBackgroundBorderless" />
-        </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/plans_carousel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:paddingHorizontal="@dimen/spacing_lg"
-            android:paddingVertical="@dimen/spacing_sm"
-            tools:listitem="@layout/item_plan_carousel" />
 
         <com.google.android.material.card.MaterialCardView
             style="@style/Widget.Ginansya.Card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/spacing_lg"
             android:layout_marginTop="@dimen/spacing_md">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:padding="@dimen/spacing_md">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/dashboard_growth"
-                    android:textAppearance="@style/TextAppearance.Ginansya.CardTitle" />
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_you_contribute"
+                        android:textAppearance="?attr/textAppearanceLabelMedium"
+                        android:textColor="?colorOnSurfaceVariant" />
+                    <TextView
+                        android:id="@+id/home_contributed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textAppearance="?attr/textAppearanceTitleLarge"
+                        android:textStyle="bold"
+                        tools:text="₱0" />
+                </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:text="Last 12 months · Projected vs Actual"
-                    android:textAppearance="@style/TextAppearance.Ginansya.Caption" />
-
-                <com.github.mikephil.charting.charts.LineChart
-                    android:id="@+id/growth_chart"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/chart_height_md"
-                    android:layout_marginTop="@dimen/spacing_md" />
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="@dimen/spacing_md"
+                    android:background="?colorOutlineVariant" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_sm"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <View
-                        android:layout_width="12dp"
-                        android:layout_height="3dp"
-                        android:background="@color/chart_actual" />
+                    android:layout_weight="1"
+                    android:orientation="vertical">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:text="Actual"
-                        android:textAppearance="?attr/textAppearanceLabelSmall" />
-
-                    <View
-                        android:layout_width="12dp"
-                        android:layout_height="3dp"
-                        android:layout_marginStart="@dimen/spacing_md"
-                        android:background="@color/chart_projected" />
+                        android:text="@string/home_interest_earned"
+                        android:textAppearance="?attr/textAppearanceLabelMedium"
+                        android:textColor="?colorOnSurfaceVariant" />
                     <TextView
+                        android:id="@+id/home_interest"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:text="Projected"
-                        android:textAppearance="?attr/textAppearanceLabelSmall" />
+                        android:layout_marginTop="4dp"
+                        android:textAppearance="?attr/textAppearanceTitleLarge"
+                        android:textStyle="bold"
+                        android:textColor="@color/light_primary"
+                        tools:text="₱0" />
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -366,46 +130,39 @@
             style="@style/Widget.Ginansya.Card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/spacing_lg"
             android:layout_marginTop="@dimen/spacing_md"
-            app:cardBackgroundColor="?colorSecondaryContainer"
+            app:cardBackgroundColor="?colorPrimaryContainer"
             app:strokeWidth="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:padding="@dimen/spacing_md">
 
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/ic_sparkle"
-                    app:tint="?colorOnSecondaryContainer"
-                    android:contentDescription="@null" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="@dimen/spacing_md"
-                    android:orientation="vertical">
+                    android:text="@string/home_try_yours"
+                    android:textAppearance="@style/TextAppearance.Ginansya.CardTitle"
+                    android:textColor="?colorOnPrimaryContainer" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/dashboard_insight"
-                        android:textAppearance="@style/TextAppearance.Ginansya.CardTitle"
-                        android:textColor="?colorOnSecondaryContainer" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/home_try_yours_body"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?colorOnPrimaryContainer" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="@string/dashboard_insight_body"
-                        android:textAppearance="?attr/textAppearanceBodyMedium"
-                        android:textColor="?colorOnSecondaryContainer" />
-                </LinearLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/home_open_calc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_md"
+                    android:text="@string/home_open_calc"
+                    app:icon="@drawable/ic_calculator"
+                    app:iconGravity="textStart" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 

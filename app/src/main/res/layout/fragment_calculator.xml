@@ -18,9 +18,21 @@
         android:paddingTop="@dimen/spacing_md"
         android:paddingBottom="@dimen/spacing_xl">
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/calc_back"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-12dp"
+            android:contentDescription="@string/nav_back"
+            app:icon="@drawable/ic_arrow_back"
+            app:iconSize="22dp"
+            app:iconTint="?colorOnSurfaceVariant" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xs"
             android:text="@string/calc_title"
             android:textAppearance="?attr/textAppearanceHeadlineMedium"
             android:textStyle="bold" />
@@ -50,7 +62,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/calc_principal"
-                    app:prefixText="$"
+                    app:prefixText="₱"
                     app:boxCornerRadiusTopStart="14dp"
                     app:boxCornerRadiusTopEnd="14dp"
                     app:boxCornerRadiusBottomStart="14dp"
@@ -60,8 +72,7 @@
                         android:id="@+id/input_principal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"
-                        android:text="5000" />
+                        android:inputType="numberDecimal" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -71,7 +82,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_md"
                     android:hint="@string/calc_monthly"
-                    app:prefixText="$"
+                    app:prefixText="₱"
                     app:boxCornerRadiusTopStart="14dp"
                     app:boxCornerRadiusTopEnd="14dp"
                     app:boxCornerRadiusBottomStart="14dp"
@@ -81,8 +92,7 @@
                         android:id="@+id/input_monthly"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"
-                        android:text="500" />
+                        android:inputType="numberDecimal" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout
@@ -109,8 +119,7 @@
                             android:id="@+id/input_rate"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="numberDecimal"
-                            android:text="5.0" />
+                            android:inputType="numberDecimal" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -130,8 +139,7 @@
                             android:id="@+id/input_years"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="number"
-                            android:text="10" />
+                            android:inputType="number" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -164,7 +172,7 @@
                     android:textAppearance="?attr/textAppearanceDisplaySmall"
                     android:textStyle="bold"
                     android:textColor="@android:color/white"
-                    tools:text="$82,938" />
+                    tools:text="₱0" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -191,7 +199,7 @@
                             android:textAppearance="?attr/textAppearanceTitleMedium"
                             android:textStyle="bold"
                             android:textColor="@android:color/white"
-                            tools:text="$65,000" />
+                            tools:text="₱0" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -213,7 +221,7 @@
                             android:textAppearance="?attr/textAppearanceTitleMedium"
                             android:textStyle="bold"
                             android:textColor="@color/brand_amber_light"
-                            tools:text="$17,938" />
+                            tools:text="₱0" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

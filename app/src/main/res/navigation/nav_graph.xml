@@ -10,18 +10,8 @@
         android:label="Home" />
 
     <fragment
-        android:id="@+id/plansFragment"
-        android:name="com.example.ginansya.ui.plans.PlansFragment"
-        android:label="Plans" />
-
-    <fragment
         android:id="@+id/calculatorFragment"
         android:name="com.example.ginansya.ui.calculator.CalculatorFragment"
         android:label="Calculator" />
-
-    <fragment
-        android:id="@+id/insightsFragment"
-        android:name="com.example.ginansya.ui.insights.InsightsFragment"
-        android:label="Insights" />
 
 </navigation>

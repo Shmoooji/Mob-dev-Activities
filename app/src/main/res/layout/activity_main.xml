@@ -16,22 +16,7 @@
         android:layout_height="0dp"
         app:defaultNavHost="true"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/bottom_nav"
-        app:navGraph="@navigation/nav_graph" />
-
-    <View
-        android:id="@+id/bottom_nav_divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?colorOutlineVariant"
-        app:layout_constraintBottom_toTopOf="@id/bottom_nav" />
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_nav"
-        style="@style/Widget.Ginansya.BottomNav"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/bottom_nav_menu" />
+        app:navGraph="@navigation/nav_graph" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

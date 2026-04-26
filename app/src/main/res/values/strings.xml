@@ -3,11 +3,14 @@
 
     <string name="nav_back">Back</string>
 
-    <string name="home_title">Your potential</string>
+    <string name="home_title">Check your Ginansya!</string>
     <string name="home_subtitle">See what consistent saving could grow into.</string>
     <string name="home_could_grow_to">Your money could grow to</string>
     <string name="home_you_contribute">You contribute</string>
     <string name="home_interest_earned">Interest earned</string>
+    <string name="home_insight_title">Insight for you</string>
+    <string name="home_insight_default">Plug your numbers into the calculator to see what compound interest can do.</string>
+    <string name="home_insight_growth_fmt">Compound interest could add %1$s — that\'s %2$d%% of your final balance.</string>
     <string name="home_try_yours">Try your own numbers</string>
     <string name="home_try_yours_body">Adjust the starting amount, monthly deposit, rate, and term.</string>
     <string name="home_open_calc">Open calculator</string>
@@ -15,14 +18,17 @@
     <string name="calc_title">Compound Calculator</string>
     <string name="calc_subtitle">See how your money can grow</string>
     <string name="calc_principal">Starting amount</string>
-    <string name="calc_monthly">Monthly deposit</string>
+    <string name="calc_deposit">Deposit per period</string>
     <string name="calc_rate">Annual interest rate (%)</string>
     <string name="calc_years">Years</string>
+    <string name="calc_compounds">Compounding frequency</string>
     <string name="calc_future_value">Your money could grow to</string>
     <string name="calc_contributed">You contribute</string>
     <string name="calc_interest_earned">Interest earned</string>
     <string name="calc_info">How is this calculated?</string>
-    <string name="calc_info_body">We use the compound interest formula and add your monthly deposits each period. Actual returns depend on your savings provider.</string>
+    <string name="calc_info_body">Used the compound interest formula as and recreated the logic of the compound calculator. Actual returns depend on your savings provider so you have to manually add it.</string>
 
-    <string name="privacy_note">All your data stays on this device.</string>
+    <string name="calc_chart_title">Projected growth</string>
+    <string name="calc_chart_legend_contributions">Your contributions</string>
+    <string name="calc_chart_legend_total">With compound interest</string>
 </resources>

@@ -5,109 +5,88 @@ Hand-off notes so the next session can pick up without re-reading the whole chat
 ## What this project is
 
 - Android app the user is submitting to their teacher. **Student demo, not production.**
-- Offline personal finance learning app: compound interest calculator, savings plans, progress tracking, insights.
+- Offline compound-interest learning tool: a Home dashboard summarizing the last projection and a live Calculator.
 - **Java**, minSdk 31, targetSdk 36, compileSdk 36, Java 11 source level, AGP 8.11.2.
 - Single module (`app`), package `com.example.ginansya`, on Windows 11, bash shell, project root `C:\Users\monsi\AndroidStudioProjects\Ginansya`.
 
 ## Scope rules the user set (important)
 
-- **No database.** No Room, no persistence. In-memory only. User explicitly confirmed this.
-- **No account / login / online banking APIs.** Fully offline.
-- **Visual polish > architectural correctness.** Don't add Hilt/Dagger, MVVM layering, unit test scaffolding, or other production plumbing unless asked.
+- **Local persistence is OK** via `SharedPreferences` (the user approved this on 2026-04-26 after originally saying "in-memory only"). No Room, no online services.
+- **No login / online banking APIs.** Fully offline.
+- **Visual polish > architectural correctness.** Don't add Hilt/Dagger, MVVM layering, unit-test scaffolding, or production plumbing unless asked.
 - **Java, not Kotlin.**
-- **No AI-looking code smell** — the user audited for and removed these on 2026-04-24. Do NOT reintroduce:
-  - No emojis anywhere.
-  - No per-line or per-section banner comments in XML (no `<!-- Hero card -->`, `<!-- action 1 -->`, etc.).
-  - No redundant Javadoc or comments that restate what the code does.
-  - Comments only when the *why* is non-obvious.
+- **No AI-looking code smell.** No emojis. No banner comments in XML. No redundant Javadoc. Comments only when the *why* is non-obvious.
+- **No hardcoding the formula.** All four compound-interest variables (P, r, n, t) plus PMT are user inputs. Visual styling constants (chart line widths, animation durations) are exempt — the rule is about formula correctness.
+- **Currency: PHP (₱).** Locale `en-PH` with the symbol overridden to ₱.
 
-## Current build state (as of 2026-04-24)
+## Current build state (2026-04-26)
 
-Build is green: `./gradlew.bat assembleDebug` succeeds. App runs on an emulator/device.
+Build is green: `./gradlew.bat assembleDebug` succeeds. App runs on emulator/device.
 
 ### Architecture shipped
 
-- Single `MainActivity` hosts a `NavHostFragment` + `BottomNavigationView` with 4 destinations: Home, Plans, Calculator, Insights.
-- Material 3 DayNight theme with custom teal (`#0F766E`) primary and amber (`#F59E0B`) secondary. Both `values/` and `values-night/` themes exist. Custom `Widget.Ginansya.*` styles for cards and bottom nav.
-- Edge-to-edge enabled; insets handled per-fragment for top padding and on `MainActivity` for bottom nav.
-- MPAndroidChart 3.1.0 via JitPack for line / bar / pie charts. (Note: `enableDashedLine` — no `set` prefix.)
-- Navigation Component 2.8.4, Lifecycle 2.8.7, RecyclerView 1.4.0, Material 1.13.0. All dependencies in `gradle/libs.versions.toml`.
+- Single `MainActivity` hosting a `NavHostFragment`. **No toolbar, no bottom nav.** Status-bar inset is applied to the nav host (top), nav-bar inset to the nav host (bottom).
+- `nav_graph.xml` has two destinations: `dashboardFragment` (start) and `calculatorFragment`. Calculator has an in-content back arrow at the top that calls `popBackStack()`; system back also works.
+- Material 3 DayNight theme. Brand colors: teal `#0F766E` primary, amber `#F59E0B` secondary.
+- MPAndroidChart 3.1.0 via JitPack for the Calculator's line chart.
 
 ### Features shipped
 
-| Screen | Status |
+| Screen | What's there |
 |---|---|
-| Dashboard (Home) | Teal gradient hero with total saved, "+$X this month" pill, 4 quick-action cards, horizontal plan carousel, projected-vs-actual line chart with dashed projection, amber "insight of the day" card. |
-| Plans list | Filterable list (All / Active / Completed chips), rich plan cards with progress bar + status chip, extended FAB (Snackbar stub). |
-| Calculator | Live 4-input form (principal, monthly, rate, years), hero result card, dual-line chart (contributions vs with-interest), info card. Recalculates on every keystroke. |
-| Insights | Monthly contributions bar chart, allocation donut with side legend, 3 colored tip cards. |
+| **Home** (`DashboardFragment`) | Title "Check your Ginansya!" + subtitle. Teal gradient hero with future-value. Breakdown card (You contribute / Interest earned). Amber-toned **Insight card** that derives text from current state and fades + slides in on every resume. CTA card "Try your own numbers" → Calculator. |
+| **Calculator** (`CalculatorFragment`) | Back arrow. Title + subtitle. Input card: Starting amount, Deposit per period, Annual rate, Years (decimals OK), **Compounding frequency dropdown** (Annually/Semi-annually/Quarterly/Monthly/Daily). Result hero (future value + contributed/interest split). Live dual-line chart (contributions dashed, total filled). Info card. |
 
 ### Data layer
 
-- `data/FinanceStore.java` — singleton repository, `getInstance()`, mutable `ArrayList<Plan>`, seeded on construction. Methods: `getAllPlans`, `getActivePlans`, `getCompletedPlans`, `findById`, `totalSaved`, `gainedThisMonth`, `monthlyContributionTotals`.
-- `data/model/` — `Plan`, `Contribution`, `PlanStatus` POJOs.
-- `domain/CompoundInterestCalculator.java` — pure Java, returns month-by-month balances.
-- `util/CurrencyUtils.java` — `format`, `formatCompact`, `formatSigned`.
+- **`data/CalculatorState`** — static API over SharedPreferences (file `calculator_state`). `update(...)` writes the four inputs + n, returns the freshly computed `Result`. `getResult(ctx)` reads the four inputs and re-runs the formula. Calculator writes on every keystroke; Home reads in `onResume`.
+- **`domain/CompoundInterestCalculator`** — pure function. Iterates period-by-period for a non-closed-form result that also produces the running balance series for the chart.
 
-Seed data in `FinanceStore` is 4 plans: Emergency Fund (ahead), House Deposit (on track), Dream Car (behind), Japan Trip (completed). All `Contribution` history is realistic-looking to make charts and insights feel lived-in.
+### Formula
 
-## What the user paused before
+`project(principal, periodicContribution, annualRatePct, years, compoundsPerYear)` does:
 
-User said: "*stops here for now I need to rest*" — right before the **logic step**. They previously phrased it as "Before we proceed to its logic" when asking for the AI-footprint audit.
+- `n = max(1, compoundsPerYear)`
+- `i = annualRatePct / 100 / n`
+- `N = max(1, round(years × n))`
+- iterates `balance = balance × (1 + i) + periodicContribution` for `N` periods
 
-### "Logic" = wire up interactions so the app is usable, not just a visual shell
+Equivalent algebraically to `A = P(1+i)^N + PMT × [((1+i)^N − 1)/i]`. Compounding choices live in `res/values/arrays.xml` as parallel `compound_freq_labels` / `compound_freq_values` (1, 2, 4, 12, 365). Default 12.
 
-Likely next tasks (in rough priority order):
+### Persistence schema (`calculator_state` SharedPreferences file)
 
-1. **Log deposit quick-action** → bottom sheet: plan picker, amount, note, date. Appends a `Contribution` to the chosen Plan via `FinanceStore`. Update carousel + charts after.
-2. **New plan FAB + quick-action** → form: name, target amount, principal, rate, monthly contribution, icon picker, color. Calls `FinanceStore.addPlan(...)`.
-3. **Plan Detail screen** → tap a plan card (from carousel or list). Dual-line chart, contributions list, "Log contribution" button, edit, delete.
-4. **What-If screen** (4th quick action) → sliders adjusting a plan's rate / monthly contribution / term, side-by-side comparison chart.
-5. **Calculator "Save as plan"** button — optional, low priority.
-
-### Things `FinanceStore` needs for the logic step
-
-Currently read-only public API. To support mutations, add:
-
-```java
-public void addPlan(Plan p)
-public void addContribution(String planId, Contribution c)
-public void removePlan(String planId)
-```
-
-Plans are `final` fields right now — `addContribution` will need to either rebuild the Plan (current approach would require making it mutable) or change `Plan.contributions` to a mutable `ArrayList` (it already is internally via the ctor). Current `Plan` is effectively immutable at the field level but holds a mutable list, so appending is safe.
-
-For the UI to refresh after a mutation, the simplest option without pulling in LiveData is a listener pattern on `FinanceStore` (`addOnChangeListener(Runnable)`), with fragments registering in `onStart` / unregistering in `onStop`. LiveData is also fine — `lifecycle-livedata` is already on the classpath.
+| Key | Type | Notes |
+|---|---|---|
+| `principal` | String | parsed as double |
+| `monthly` | String | **legacy key name** — semantics now "deposit per compounding period". Java constant is `KEY_DEPOSIT`. |
+| `rate` | String | annual rate, percent |
+| `years` | String | decimals OK; legacy int values are migrated via `ClassCastException` catch |
+| `compounds_per_year` | int | default 12 |
 
 ## File map
 
 ```
 C:\Users\monsi\AndroidStudioProjects\Ginansya\
-├── CONTEXT.md                              ← this file
-├── app\build.gradle.kts                    ← viewBinding + all deps
-├── gradle\libs.versions.toml               ← version catalog
-├── settings.gradle.kts                     ← JitPack repo added for MPAndroidChart
+├── CONTEXT.md                             ← this file
+├── Ginansya Docs.pdf                      ← user-facing short docs
+├── app\build.gradle.kts                   ← stripped of unused deps + viewBinding
+├── gradle\libs.versions.toml
+├── settings.gradle.kts                    ← JitPack repo for MPAndroidChart
 └── app\src\main\
     ├── AndroidManifest.xml
     ├── java\com\example\ginansya\
-    │   ├── MainActivity.java
-    │   ├── data\
-    │   │   ├── FinanceStore.java           ← singleton repo
-    │   │   └── model\{Plan, Contribution, PlanStatus}.java
-    │   ├── domain\CompoundInterestCalculator.java
-    │   ├── util\CurrencyUtils.java
+    │   ├── MainActivity.java              ← inflate + insets only
+    │   ├── data\CalculatorState.java      ← SharedPreferences-backed state
+    │   ├── domain\CompoundInterestCalculator.java  ← pure formula
+    │   ├── util\CurrencyUtils.java        ← PHP / ₱ formatter
     │   └── ui\
-    │       ├── dashboard\{DashboardFragment, PlanCarouselAdapter}.java
-    │       ├── plans\{PlansFragment, PlansAdapter}.java
-    │       ├── calculator\CalculatorFragment.java
-    │       └── insights\InsightsFragment.java
+    │       ├── dashboard\DashboardFragment.java
+    │       └── calculator\CalculatorFragment.java
     └── res\
-        ├── values\{colors, themes, strings, dimens}.xml
+        ├── values\{colors, themes, strings, dimens, arrays}.xml
         ├── values-night\themes.xml
-        ├── color\bottom_nav_item_color.xml
-        ├── drawable\           ← 15 vector icons + gradients + chip bgs
-        ├── layout\             ← activity + 4 fragments + 3 item layouts
-        ├── menu\bottom_nav_menu.xml
+        ├── drawable\          ← 9 vectors + 3 backgrounds (post-audit)
+        ├── layout\{activity_main, fragment_dashboard, fragment_calculator}.xml
         └── navigation\nav_graph.xml
 ```
 
@@ -115,23 +94,30 @@ C:\Users\monsi\AndroidStudioProjects\Ginansya\
 
 ```bash
 cd "C:/Users/monsi/AndroidStudioProjects/Ginansya"
-./gradlew.bat assembleDebug           # verify compile
+./gradlew.bat assembleDebug
 ```
 
-Open in Android Studio, run on a device/emulator. First build takes ~2 min (JitPack pulls MPAndroidChart).
+Open in Android Studio, run on a device or emulator. First build pulls MPAndroidChart from JitPack (~2 min).
 
-## Gotchas
+## What was just done (2026-04-26 cleanup pass)
 
-- `chart.enableDashedLine(...)` on MPAndroidChart 3.1.0 — no `set` prefix.
-- In `item_plan_carousel.xml`, pushing the status chip to the right uses a weighted spacer `View` — don't use `layout_marginStart="auto"` (not a valid value, build fails).
-- The progress ring currently uses a `LinearProgressIndicator`; if switching to a `CircularProgressIndicator`, `setProgressCompat(pct, true)` still works.
-- `Plan.currentBalance()` applies compound growth once over `monthsElapsed` months against `principal + sum(contributions)` — deliberately simplified for the demo. Tighter math (month-by-month with each contribution compounded separately) would be a small rewrite if the teacher asks.
-- Chart label colors are currently hard-bound to the light palette (`R.color.light_on_surface` etc.), so in dark mode axis labels will look off. Not a blocker; swap to `?colorOnSurface` via `TypedValue` if polishing.
+- Removed Profile/Plans/Insights screens (earlier in the session) and the seeded plan data layer.
+- Switched currency to PHP/₱.
+- Added local persistence via SharedPreferences with user approval.
+- Exposed compounding frequency `n` as a dropdown so all four formula variables come from inputs.
+- Audit removed: 3 unused drawables, 10 unused colors, 3 theme styles, 7 dimens, 4 dependencies (`lifecycle-viewmodel`, `lifecycle-livedata`, `recyclerview`, `navigation-ui`), `viewBinding = true`, and the Android Studio default test scaffolding (`testInstrumentationRunner` + `testImplementation`/`androidTestImplementation` lines and their version-catalog entries).
+- Promoted `#D1FAE5` (4 occurrences) → `@color/hero_subtitle`. Promoted repeated `14dp` corner radii → `@dimen/input_corner_radius`. Three runtime English labels in `fragment_calculator.xml` moved to string resources.
+
+## What's likely next
+
+- Chart label colors are still hard-bound to the `light_*` palette in `CalculatorFragment.configureChart()`. Dark-mode polish would swap to `?colorOnSurface` / `?colorOutlineVariant` via `TypedValue`.
+- A "Reset" button in Calculator if persistence stickiness confuses a teacher running the app fresh.
+- Decide what the chart should show when `years=0` or `rate=0` (currently flat line at 0).
 
 ## Memory (Claude-side)
 
 The main agent's memory already records:
-- Project scope = student demo, no DB, visual polish first.
+- Project scope (student demo, visual polish first).
 - AI-footprint preference.
 
-Those memories persist across sessions.
+Those memories persist across sessions. The "no DB, in-memory only" rule has been relaxed in practice — local SharedPreferences is now in use.

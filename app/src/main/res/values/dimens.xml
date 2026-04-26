@@ -6,13 +6,6 @@
     <dimen name="spacing_lg">24dp</dimen>
     <dimen name="spacing_xl">32dp</dimen>
 
-    <dimen name="card_corner_small">12dp</dimen>
-    <dimen name="card_corner_medium">20dp</dimen>
-    <dimen name="card_corner_large">28dp</dimen>
-
-    <dimen name="hero_height">190dp</dimen>
-    <dimen name="chart_height_sm">140dp</dimen>
-    <dimen name="chart_height_md">220dp</dimen>
+    <dimen name="input_corner_radius">14dp</dimen>
     <dimen name="chart_height_lg">260dp</dimen>
-    <dimen name="quick_action_size">74dp</dimen>
 </resources>

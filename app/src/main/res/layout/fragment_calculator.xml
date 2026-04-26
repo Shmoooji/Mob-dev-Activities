@@ -63,10 +63,10 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/calc_principal"
                     app:prefixText="₱"
-                    app:boxCornerRadiusTopStart="14dp"
-                    app:boxCornerRadiusTopEnd="14dp"
-                    app:boxCornerRadiusBottomStart="14dp"
-                    app:boxCornerRadiusBottomEnd="14dp">
+                    app:boxCornerRadiusTopStart="@dimen/input_corner_radius"
+                    app:boxCornerRadiusTopEnd="@dimen/input_corner_radius"
+                    app:boxCornerRadiusBottomStart="@dimen/input_corner_radius"
+                    app:boxCornerRadiusBottomEnd="@dimen/input_corner_radius">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/input_principal"
@@ -81,12 +81,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_md"
-                    android:hint="@string/calc_monthly"
+                    android:hint="@string/calc_deposit"
                     app:prefixText="₱"
-                    app:boxCornerRadiusTopStart="14dp"
-                    app:boxCornerRadiusTopEnd="14dp"
-                    app:boxCornerRadiusBottomStart="14dp"
-                    app:boxCornerRadiusBottomEnd="14dp">
+                    app:boxCornerRadiusTopStart="@dimen/input_corner_radius"
+                    app:boxCornerRadiusTopEnd="@dimen/input_corner_radius"
+                    app:boxCornerRadiusBottomStart="@dimen/input_corner_radius"
+                    app:boxCornerRadiusBottomEnd="@dimen/input_corner_radius">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/input_monthly"
@@ -110,10 +110,10 @@
                         android:layout_marginEnd="@dimen/spacing_sm"
                         android:hint="@string/calc_rate"
                         app:suffixText="%"
-                        app:boxCornerRadiusTopStart="14dp"
-                        app:boxCornerRadiusTopEnd="14dp"
-                        app:boxCornerRadiusBottomStart="14dp"
-                        app:boxCornerRadiusBottomEnd="14dp">
+                        app:boxCornerRadiusTopStart="@dimen/input_corner_radius"
+                        app:boxCornerRadiusTopEnd="@dimen/input_corner_radius"
+                        app:boxCornerRadiusBottomStart="@dimen/input_corner_radius"
+                        app:boxCornerRadiusBottomEnd="@dimen/input_corner_radius">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/input_rate"
@@ -130,18 +130,37 @@
                         android:layout_weight="1"
                         android:layout_marginStart="@dimen/spacing_sm"
                         android:hint="@string/calc_years"
-                        app:boxCornerRadiusTopStart="14dp"
-                        app:boxCornerRadiusTopEnd="14dp"
-                        app:boxCornerRadiusBottomStart="14dp"
-                        app:boxCornerRadiusBottomEnd="14dp">
+                        app:boxCornerRadiusTopStart="@dimen/input_corner_radius"
+                        app:boxCornerRadiusTopEnd="@dimen/input_corner_radius"
+                        app:boxCornerRadiusBottomStart="@dimen/input_corner_radius"
+                        app:boxCornerRadiusBottomEnd="@dimen/input_corner_radius">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/input_years"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="number" />
+                            android:inputType="numberDecimal" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_compounds"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_md"
+                    android:hint="@string/calc_compounds"
+                    app:boxCornerRadiusTopStart="@dimen/input_corner_radius"
+                    app:boxCornerRadiusTopEnd="@dimen/input_corner_radius"
+                    app:boxCornerRadiusBottomStart="@dimen/input_corner_radius"
+                    app:boxCornerRadiusBottomEnd="@dimen/input_corner_radius">
+
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                        android:id="@+id/input_compounds"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -162,7 +181,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/calc_future_value"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
-                    android:textColor="#D1FAE5" />
+                    android:textColor="@color/hero_subtitle" />
 
                 <TextView
                     android:id="@+id/calc_future_value"
@@ -190,7 +209,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/calc_contributed"
                             android:textAppearance="?attr/textAppearanceLabelSmall"
-                            android:textColor="#D1FAE5" />
+                            android:textColor="@color/hero_subtitle" />
                         <TextView
                             android:id="@+id/calc_contributed"
                             android:layout_width="wrap_content"
@@ -212,7 +231,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/calc_interest_earned"
                             android:textAppearance="?attr/textAppearanceLabelSmall"
-                            android:textColor="#D1FAE5" />
+                            android:textColor="@color/hero_subtitle" />
                         <TextView
                             android:id="@+id/calc_interest"
                             android:layout_width="wrap_content"
@@ -242,7 +261,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Projected growth"
+                    android:text="@string/calc_chart_title"
                     android:textAppearance="@style/TextAppearance.Ginansya.CardTitle" />
 
                 <com.github.mikephil.charting.charts.LineChart
@@ -266,7 +285,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
-                        android:text="Your contributions"
+                        android:text="@string/calc_chart_legend_contributions"
                         android:textAppearance="?attr/textAppearanceLabelSmall" />
 
                     <View
@@ -278,7 +297,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
-                        android:text="With compound interest"
+                        android:text="@string/calc_chart_legend_total"
                         android:textAppearance="?attr/textAppearanceLabelSmall" />
                 </LinearLayout>
             </LinearLayout>

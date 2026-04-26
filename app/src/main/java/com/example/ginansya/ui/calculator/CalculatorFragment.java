@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -30,22 +31,29 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class CalculatorFragment extends Fragment {
 
     private EditText inputPrincipal;
-    private EditText inputMonthly;
+    private EditText inputDeposit;
     private EditText inputRate;
     private EditText inputYears;
+    private MaterialAutoCompleteTextView inputCompounds;
 
     private TextView futureValue;
     private TextView contributedView;
     private TextView interestView;
 
     private LineChart chart;
+
+    private String[] compoundLabels;
+    private int[] compoundValues;
+    private int compoundsPerYear;
 
     @Nullable
     @Override
@@ -63,15 +71,20 @@ public class CalculatorFragment extends Fragment {
                 Navigation.findNavController(v).popBackStack());
 
         inputPrincipal = view.findViewById(R.id.input_principal);
-        inputMonthly = view.findViewById(R.id.input_monthly);
+        inputDeposit = view.findViewById(R.id.input_monthly);
         inputRate = view.findViewById(R.id.input_rate);
         inputYears = view.findViewById(R.id.input_years);
+        inputCompounds = view.findViewById(R.id.input_compounds);
         futureValue = view.findViewById(R.id.calc_future_value);
         contributedView = view.findViewById(R.id.calc_contributed);
         interestView = view.findViewById(R.id.calc_interest);
         chart = view.findViewById(R.id.calc_chart);
 
+        compoundLabels = getResources().getStringArray(R.array.compound_freq_labels);
+        compoundValues = getResources().getIntArray(R.array.compound_freq_values);
+
         configureChart();
+        setupCompoundsDropdown();
         prefillFromState();
 
         TextWatcher watcher = new TextWatcher() {
@@ -80,23 +93,48 @@ public class CalculatorFragment extends Fragment {
             @Override public void afterTextChanged(Editable s) { recalc(); }
         };
         inputPrincipal.addTextChangedListener(watcher);
-        inputMonthly.addTextChangedListener(watcher);
+        inputDeposit.addTextChangedListener(watcher);
         inputRate.addTextChangedListener(watcher);
         inputYears.addTextChangedListener(watcher);
 
         recalc();
     }
 
+    private void setupCompoundsDropdown() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
+                android.R.layout.simple_list_item_1, compoundLabels);
+        inputCompounds.setAdapter(adapter);
+        inputCompounds.setOnItemClickListener((parent, v, position, id) -> {
+            compoundsPerYear = compoundValues[position];
+            recalc();
+        });
+    }
+
     private void prefillFromState() {
         Context ctx = requireContext();
         double p = CalculatorState.getPrincipal(ctx);
-        double m = CalculatorState.getMonthly(ctx);
+        double d = CalculatorState.getDeposit(ctx);
         double r = CalculatorState.getRate(ctx);
-        int y = CalculatorState.getYears(ctx);
+        double y = CalculatorState.getYears(ctx);
+        compoundsPerYear = CalculatorState.getCompoundsPerYear(ctx);
+
         if (p != 0) inputPrincipal.setText(numText(p));
-        if (m != 0) inputMonthly.setText(numText(m));
+        if (d != 0) inputDeposit.setText(numText(d));
         if (r != 0) inputRate.setText(numText(r));
-        if (y != 0) inputYears.setText(String.valueOf(y));
+        if (y != 0) inputYears.setText(numText(y));
+
+        int idx = indexOfValue(compoundsPerYear);
+        if (idx < 0) idx = indexOfValue(12);
+        if (idx < 0) idx = 0;
+        inputCompounds.setText(compoundLabels[idx], false);
+        compoundsPerYear = compoundValues[idx];
+    }
+
+    private int indexOfValue(int v) {
+        for (int i = 0; i < compoundValues.length; i++) {
+            if (compoundValues[i] == v) return i;
+        }
+        return -1;
     }
 
     private static String numText(double v) {
@@ -105,22 +143,21 @@ public class CalculatorFragment extends Fragment {
 
     private void recalc() {
         double principal = readDouble(inputPrincipal, 0);
-        double monthly = readDouble(inputMonthly, 0);
+        double deposit = readDouble(inputDeposit, 0);
         double rate = readDouble(inputRate, 0);
-        int years = (int) readDouble(inputYears, 0);
+        double years = readDouble(inputYears, 0);
 
         CompoundInterestCalculator.Result r = CalculatorState.update(
-                requireContext(), principal, monthly, rate, years);
+                requireContext(), principal, deposit, rate, years, compoundsPerYear);
 
         futureValue.setText(CurrencyUtils.format(r.futureValue));
         contributedView.setText(CurrencyUtils.format(r.totalContributed));
         interestView.setText(CurrencyUtils.format(Math.max(0, r.interestEarned)));
 
-        updateChart(principal, monthly, years, r.monthlyBalances);
+        updateChart(principal, deposit, r.periodBalances);
     }
 
-    private void updateChart(double principal, double monthly,
-                             int years, List<Double> balances) {
+    private void updateChart(double principal, double deposit, List<Double> balances) {
         List<Entry> totalEntries = new ArrayList<>();
         List<Entry> contribEntries = new ArrayList<>();
 
@@ -129,14 +166,14 @@ public class CalculatorFragment extends Fragment {
 
         for (int i = 0; i < points; i += step) {
             totalEntries.add(new Entry(i, balances.get(i).floatValue()));
-            float contrib = (float) (principal + monthly * i);
+            float contrib = (float) (principal + deposit * i);
             contribEntries.add(new Entry(i, contrib));
         }
         if (totalEntries.isEmpty()
                 || totalEntries.get(totalEntries.size() - 1).getX() < points - 1) {
             int last = points - 1;
             totalEntries.add(new Entry(last, balances.get(last).floatValue()));
-            contribEntries.add(new Entry(last, (float) (principal + monthly * last)));
+            contribEntries.add(new Entry(last, (float) (principal + deposit * last)));
         }
 
         LineDataSet totalSet = new LineDataSet(totalEntries, "Total");
@@ -167,13 +204,17 @@ public class CalculatorFragment extends Fragment {
         sets.add(totalSet);
         chart.setData(new LineData(sets));
 
+        final int n = compoundsPerYear;
         chart.getXAxis().setValueFormatter(new ValueFormatter() {
             @Override
             public String getAxisLabel(float value, AxisBase axis) {
-                int months = Math.round(value);
-                if (months == 0) return "Now";
-                int y = months / 12;
-                return y + "y";
+                int periods = Math.round(value);
+                if (periods == 0) return "Now";
+                double yearsAtPeriod = (double) periods / n;
+                if (yearsAtPeriod == Math.floor(yearsAtPeriod)) {
+                    return ((int) yearsAtPeriod) + "y";
+                }
+                return String.format(Locale.US, "%.1fy", yearsAtPeriod);
             }
         });
 

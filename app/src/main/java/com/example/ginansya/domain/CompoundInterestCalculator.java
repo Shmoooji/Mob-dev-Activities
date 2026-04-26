@@ -9,69 +9,39 @@ public final class CompoundInterestCalculator {
         public final double futureValue;
         public final double totalContributed;
         public final double interestEarned;
-        public final List<Double> monthlyBalances;
+        public final List<Double> periodBalances;
 
         Result(double futureValue, double totalContributed,
-               double interestEarned, List<Double> monthlyBalances) {
+               double interestEarned, List<Double> periodBalances) {
             this.futureValue = futureValue;
             this.totalContributed = totalContributed;
             this.interestEarned = interestEarned;
-            this.monthlyBalances = monthlyBalances;
+            this.periodBalances = periodBalances;
         }
     }
 
     private CompoundInterestCalculator() {}
 
     public static Result project(double principal,
-                                 double monthlyContribution,
+                                 double periodicContribution,
                                  double annualRatePct,
-                                 int years) {
-        int months = Math.max(1, years * 12);
-        double monthlyRate = annualRatePct / 100.0 / 12.0;
-        double balance = principal;
+                                 double years,
+                                 int compoundsPerYear) {
+        int n = Math.max(1, compoundsPerYear);
+        double periodRate = annualRatePct / 100.0 / n;
+        int totalPeriods = Math.max(1, (int) Math.round(years * n));
 
-        List<Double> series = new ArrayList<>(months + 1);
+        double balance = principal;
+        List<Double> series = new ArrayList<>(totalPeriods + 1);
         series.add(balance);
 
-        for (int m = 1; m <= months; m++) {
-            balance = balance * (1 + monthlyRate) + monthlyContribution;
+        for (int p = 1; p <= totalPeriods; p++) {
+            balance = balance * (1 + periodRate) + periodicContribution;
             series.add(balance);
         }
 
-        double contributed = principal + monthlyContribution * months;
+        double contributed = principal + periodicContribution * totalPeriods;
         double interest = balance - contributed;
         return new Result(balance, contributed, interest, series);
-    }
-
-    public static List<Double> projectionSeries(double principal,
-                                                double monthlyContribution,
-                                                double annualRatePct,
-                                                int months) {
-        double monthlyRate = annualRatePct / 100.0 / 12.0;
-        double balance = principal;
-        List<Double> series = new ArrayList<>(months + 1);
-        series.add(balance);
-        for (int m = 1; m <= months; m++) {
-            balance = balance * (1 + monthlyRate) + monthlyContribution;
-            series.add(balance);
-        }
-        return series;
-    }
-
-    public static List<Double> actualSeries(double principal,
-                                            double annualRatePct,
-                                            int months,
-                                            double[] monthlyActualDeposits) {
-        double monthlyRate = annualRatePct / 100.0 / 12.0;
-        double balance = principal;
-        List<Double> series = new ArrayList<>(months + 1);
-        series.add(balance);
-        for (int m = 1; m <= months; m++) {
-            double deposit = m - 1 < monthlyActualDeposits.length
-                    ? monthlyActualDeposits[m - 1] : 0;
-            balance = balance * (1 + monthlyRate) + deposit;
-            series.add(balance);
-        }
-        return series;
     }
 }

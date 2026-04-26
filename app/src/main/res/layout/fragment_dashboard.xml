@@ -49,7 +49,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/home_could_grow_to"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
-                    android:textColor="#D1FAE5" />
+                    android:textColor="@color/hero_subtitle" />
 
                 <TextView
                     android:id="@+id/home_future_value"
@@ -127,6 +127,54 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/home_insight_card"
+            style="@style/Widget.Ginansya.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_md"
+            app:cardBackgroundColor="?colorSecondaryContainer"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/spacing_md">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_sparkle"
+                    app:tint="?colorOnSecondaryContainer"
+                    android:contentDescription="@null" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/spacing_md"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_insight_title"
+                        android:textAppearance="@style/TextAppearance.Ginansya.CardTitle"
+                        android:textColor="?colorOnSecondaryContainer" />
+
+                    <TextView
+                        android:id="@+id/home_insight_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="?colorOnSecondaryContainer"
+                        tools:text="@string/home_insight_default" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
             style="@style/Widget.Ginansya.Card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -165,14 +213,6 @@
                     app:iconGravity="textStart" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/spacing_lg"
-            android:text="@string/privacy_note"
-            android:textAppearance="@style/TextAppearance.Ginansya.Caption" />
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

@@ -46,17 +46,6 @@
         <item name="cornerSize">24dp</item>
     </style>
 
-    <style name="TextAppearance.Ginansya.HeroAmount" parent="TextAppearance.Material3.DisplayMedium">
-        <item name="android:textStyle">bold</item>
-        <item name="android:letterSpacing">-0.02</item>
-        <item name="android:textColor">?colorOnPrimary</item>
-    </style>
-
-    <style name="TextAppearance.Ginansya.SectionTitle" parent="TextAppearance.Material3.TitleMedium">
-        <item name="android:textStyle">bold</item>
-        <item name="android:letterSpacing">0.01</item>
-    </style>
-
     <style name="TextAppearance.Ginansya.CardTitle" parent="TextAppearance.Material3.TitleSmall">
         <item name="android:textStyle">bold</item>
     </style>
@@ -71,12 +60,6 @@
         <item name="cardBackgroundColor">?colorSurface</item>
         <item name="strokeWidth">1dp</item>
         <item name="strokeColor">?colorOutlineVariant</item>
-    </style>
-
-    <style name="Widget.Ginansya.Card.Hero" parent="Widget.Material3.CardView.Filled">
-        <item name="cardCornerRadius">28dp</item>
-        <item name="cardElevation">0dp</item>
-        <item name="cardBackgroundColor">?colorPrimary</item>
     </style>
 
 </resources>
